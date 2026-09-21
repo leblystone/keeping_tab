@@ -1,8 +1,9 @@
-# keeping_tab
+# Keeping Tab
 
-Interactive digital savings-challenge / cash-envelope books for **Keeping Tab**.
+Interactive digital savings challenges / cash-envelope books — digitized from the printable TAB line.
 
-Digitized from the founder printable Canva line (TAB / savings cards). Outside Pep Planner and GRiP/Brothers Ledger.
+Brand: **Keeping Tab** (singular). Separate from Pep Planner and GRiP.
 
 ## Status
-Bootstrap commit so Cursor Cloud Agents can work the repo. v.1 MVP interactive book build follows.
+
+Greenfield. Seed pack for v.1 MVP cards lives in `data/keeping-tab-v1-mvp-cards.json`.
