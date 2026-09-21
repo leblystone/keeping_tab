@@ -6,7 +6,7 @@ Machine-readable seed for playable MVP cards from the **Printable Savings - TAB 
 
 | File | Purpose |
 |------|---------|
-| `keeping-tab-v1-mvp-cards.json` | Book + card seed (this pack) |
+| `mvp-cards.json` | Book + card seed (this pack) |
 | `savings-challenge-catalog-DAFoV5QxO0U.md` | Source catalog (read-only) |
 
 ## Book
@@ -67,7 +67,7 @@ Progress is **omitted** in the seed (runtime state).
 
 ## How to use
 
-1. Load `keeping-tab-v1-mvp-cards.json` as the book seed.
+1. Load `mvp-cards.json` as the book seed.
 2. For each card, treat `cells[].amountCents` as the tap/fill amounts; track user progress separately (do not persist progress into this seed).
 3. Display goal from `goalCents`. If `qaFlags` contains `cell_sum_mismatch`, UI/QA can surface that printed goal ≠ Σ cells (`cellsSumCents`).
 4. Amounts are always integer **cents** (e.g. $1,000 → `100000`).
