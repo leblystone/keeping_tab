@@ -1,23 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ProgressState, Card } from "@/lib/types";
 import { loadProgress, saveProgress, getCardProgress } from "@/lib/storage";
 
 export function useProgress() {
-  const [progress, setProgress] = useState<ProgressState>({});
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [progress, setProgress] = useState<ProgressState>(() => loadProgress());
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    setProgress(loadProgress());
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (isLoaded) {
-      saveProgress(progress);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
     }
-  }, [progress, isLoaded]);
+    saveProgress(progress);
+  }, [progress]);
 
   const toggleCell = (cardId: string, cellId: string, card: Card) => {
     setProgress((prev) => {
@@ -52,5 +49,5 @@ export function useProgress() {
     });
   };
 
-  return { progress, toggleCell, isLoaded };
+  return { progress, toggleCell };
 }

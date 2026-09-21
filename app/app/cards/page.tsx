@@ -10,15 +10,7 @@ import bookData from "@/data/cards.json";
 const book = bookData as Book;
 
 export default function CardsPage() {
-  const { progress, isLoaded } = useProgress();
-
-  if (!isLoaded) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-500">Loading...</div>
-      </div>
-    );
-  }
+  const { progress } = useProgress();
 
   return (
     <div className="min-h-screen bg-gray-50">

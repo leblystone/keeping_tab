@@ -16,7 +16,7 @@ type PageProps = {
 
 export default function CardDetailPage({ params }: PageProps) {
   const resolvedParams = use(params);
-  const { progress, toggleCell, isLoaded } = useProgress();
+  const { progress, toggleCell } = useProgress();
   
   const card = book.cards.find((c) => c.id === resolvedParams.id);
 
@@ -32,14 +32,6 @@ export default function CardDetailPage({ params }: PageProps) {
             Back to Cards
           </Link>
         </div>
-      </div>
-    );
-  }
-
-  if (!isLoaded) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-500">Loading...</div>
       </div>
     );
   }
