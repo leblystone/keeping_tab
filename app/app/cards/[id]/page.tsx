@@ -1,11 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { use } from "react";
+import { Suspense, use, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { Book } from "@/lib/types";
 import { useProgress } from "@/hooks/useProgress";
 import { getCardProgress } from "@/lib/storage";
 import { formatCurrency } from "@/lib/format";
+import { OverlayCardCanvas } from "@/components/OverlayCardCanvas";
+import { buildOverlays, sumOverlayCents } from "@/lib/overlays";
+import { getBundle } from "@/lib/bundles";
 import bookData from "@/data/cards.json";
 
 const book = bookData as Book;
@@ -14,21 +18,31 @@ type PageProps = {
   params: Promise<{ id: string }>;
 };
 
-export default function CardDetailPage({ params }: PageProps) {
+function CardDetailInner({ params }: PageProps) {
   const resolvedParams = use(params);
-  const { progress, toggleCell } = useProgress();
-  
+  const searchParams = useSearchParams();
+  const fromBundle = searchParams.get("from");
+  const bundle = fromBundle ? getBundle(fromBundle) : undefined;
+
+  const { progress, toggleCell, setOverlayAmount } = useProgress();
   const card = book.cards.find((c) => c.id === resolvedParams.id);
 
-  if (!card) {
+  const backHref = bundle ? `/bundles/${bundle.id}` : "/cards";
+  const backLabel = bundle ? bundle.name : "Cards";
+
+  const cardProgress = card ? getCardProgress(progress, card.id) : null;
+
+  const overlays = useMemo(() => {
+    if (!card || !cardProgress) return [];
+    return buildOverlays(card, cardProgress.amountOverrides);
+  }, [card, cardProgress]);
+
+  if (!card || !cardProgress) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center p-4">
         <div className="text-center">
           <p className="text-gray-600 mb-4">Card not found</p>
-          <Link
-            href="/cards"
-            className="text-orange-600 hover:text-orange-700 font-medium"
-          >
+          <Link href="/cards" className="text-orange-600 font-medium">
             Back to Cards
           </Link>
         </div>
@@ -36,17 +50,22 @@ export default function CardDetailPage({ params }: PageProps) {
     );
   }
 
-  const cardProgress = getCardProgress(progress, card.id);
   const progressPercent = (cardProgress.savedCents / card.goalCents) * 100;
-  const hasMismatch = card.qaFlags?.includes("cell_sum_mismatch");
+  const overlaySum = sumOverlayCents(overlays);
+  const flagged = card.qaFlags?.includes("cell_sum_mismatch");
+  const edited =
+    Boolean(cardProgress.amountOverrides) &&
+    Object.keys(cardProgress.amountOverrides || {}).length > 0;
+  const showMismatchNote =
+    flagged || (edited && Math.abs(overlaySum - card.goalCents) > 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
+    <div className="min-h-screen bg-stone-50">
+      <header className="bg-white border-b border-stone-200 sticky top-0 z-10">
+        <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
           <Link
-            href="/cards"
-            className="text-gray-600 hover:text-gray-900 transition-colors"
+            href={backHref}
+            className="text-stone-600 hover:text-stone-900 transition-colors p-1"
           >
             <svg
               className="w-6 h-6"
@@ -63,31 +82,34 @@ export default function CardDetailPage({ params }: PageProps) {
             </svg>
           </Link>
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg font-semibold text-gray-800 truncate">
+            <p className="text-[10px] uppercase tracking-wider text-stone-400 font-bold truncate">
+              {backLabel}
+            </p>
+            <h1 className="text-lg font-semibold text-stone-800 truncate">
               {card.title}
             </h1>
           </div>
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-6 pb-24">
-        <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
-          <div className="flex items-center justify-between mb-4">
+      <main className="max-w-md mx-auto px-4 py-5 pb-24">
+        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-4 mb-5">
+          <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-sm text-gray-600">Goal</p>
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-xs text-stone-500">Printed goal</p>
+              <p className="text-xl font-bold text-stone-900">
                 {formatCurrency(card.goalCents)}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-sm text-gray-600">Saved</p>
-              <p className="text-2xl font-bold text-orange-600">
+              <p className="text-xs text-stone-500">Saved (overlays)</p>
+              <p className="text-xl font-bold text-orange-600">
                 {formatCurrency(cardProgress.savedCents)}
               </p>
             </div>
           </div>
 
-          <div className="relative h-3 bg-gray-200 rounded-full overflow-hidden mb-2">
+          <div className="relative h-2.5 bg-stone-100 rounded-full overflow-hidden mb-2">
             <div
               className={`absolute inset-y-0 left-0 rounded-full transition-all ${
                 cardProgress.isComplete
@@ -98,87 +120,56 @@ export default function CardDetailPage({ params }: PageProps) {
             />
           </div>
 
-          <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center justify-between text-xs text-stone-500">
             <span>
-              {cardProgress.filledCells.size} of {card.cells.length} cells filled
+              {cardProgress.filledCells.size} of {overlays.length} filled
             </span>
             <span>{Math.round(progressPercent)}%</span>
           </div>
 
           {cardProgress.isComplete && (
-            <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-green-600 flex-shrink-0"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+            <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
               <span className="text-sm font-medium text-green-800">
                 Challenge completed!
               </span>
             </div>
           )}
 
-          {hasMismatch && (
-            <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          {showMismatchNote && (
+            <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
               <p className="text-xs text-amber-800">
-                Note: Cell amounts sum to {formatCurrency(card.cellsSumCents || 0)}, 
-                but the printed goal is {formatCurrency(card.goalCents)}.
+                Overlay amounts sum to {formatCurrency(overlaySum)}; printed
+                goal is {formatCurrency(card.goalCents)}. Edit overlays to
+                match — printed goal stays primary.
               </p>
             </div>
           )}
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-5">
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Tap cells to save
-          </h2>
-
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-            {card.cells.map((cell) => {
-              const isFilled = cardProgress.filledCells.has(cell.id);
-              
-              return (
-                <button
-                  key={cell.id}
-                  onClick={() => toggleCell(card.id, cell.id, card)}
-                  className={`aspect-square rounded-xl border-2 transition-all active:scale-95 ${
-                    isFilled
-                      ? "bg-gradient-to-br from-amber-400 to-orange-500 border-orange-500 text-white shadow-md"
-                      : "bg-white border-gray-300 text-gray-700 hover:border-orange-400 hover:bg-orange-50"
-                  }`}
-                >
-                  <div className="flex flex-col items-center justify-center h-full p-2">
-                    {isFilled && (
-                      <svg
-                        className="w-4 h-4 mb-1"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    )}
-                    <span className={`text-xs font-semibold ${isFilled ? "" : "text-gray-600"}`}>
-                      {formatCurrency(cell.amountCents)}
-                    </span>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <OverlayCardCanvas
+          card={card}
+          filledIds={cardProgress.filledCells}
+          amountOverrides={cardProgress.amountOverrides}
+          onToggle={(overlayId) => toggleCell(card.id, overlayId, card)}
+          onAmountChange={(overlayId, cents) =>
+            setOverlayAmount(card.id, overlayId, cents, card)
+          }
+        />
       </main>
     </div>
+  );
+}
+
+export default function CardDetailPage(props: PageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center text-stone-500 text-sm">
+          Loading card…
+        </div>
+      }
+    >
+      <CardDetailInner {...props} />
+    </Suspense>
   );
 }

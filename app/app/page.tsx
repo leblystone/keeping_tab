@@ -2,56 +2,105 @@
 
 import Link from "next/link";
 import { Book } from "@/lib/types";
+import { BUNDLES, bundlesByTier } from "@/lib/bundles";
+import { BundleTile } from "@/components/BundleTile";
+import { usePaidUnlock } from "@/hooks/usePaidUnlock";
 import bookData from "@/data/cards.json";
 
 const book = bookData as Book;
 
 export default function LibraryPage() {
+  const { unlocked, unlock, lock } = usePaidUnlock();
+  const free = bundlesByTier("free");
+  const paid = bundlesByTier("paid");
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 text-center">
-          <div className="mb-6">
-            <div className="w-24 h-24 mx-auto bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-              <svg
-                className="w-12 h-12 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-          </div>
-          
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50/60 to-stone-100">
+      <main className="max-w-md mx-auto px-4 pt-10 pb-16">
+        <div className="text-center mb-8">
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-amber-700/80 mb-2">
+            Keeping Tab
+          </p>
+          <h1 className="text-4xl font-bold text-stone-800 tracking-tight">
             {book.title}
           </h1>
-          
-          <p className="text-gray-600 mb-2">Version {book.version}</p>
-          
-          <div className="bg-amber-50 rounded-xl p-4 mb-6">
-            <p className="text-sm text-gray-700">
-              <span className="font-semibold text-amber-700">{book.cards.length}</span> savings challenges
-            </p>
-            <p className="text-xs text-gray-600 mt-1">
-              Tap cells to track your progress
-            </p>
+          <p className="text-stone-600 mt-2 text-sm">
+            Browse free packs or unlock unique paid sets — then open a card and
+            tap live $ overlays.
+          </p>
+        </div>
+
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-emerald-700">
+              Free packs
+            </h2>
+            <span className="text-xs text-stone-500">{free.length} packs</span>
+          </div>
+          <div className="space-y-3">
+            {free.map((b) => (
+              <BundleTile key={b.id} bundle={b} />
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-8">
+          <div className="flex items-center justify-between mb-3 px-1">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-violet-700">
+              Paid packs
+            </h2>
+            <span className="text-xs text-stone-500">
+              {paid.length} unique · {unlocked ? "unlocked" : "preview lock"}
+            </span>
           </div>
 
+          {!unlocked && (
+            <div className="mb-3 rounded-2xl border border-violet-200 bg-violet-50 p-4">
+              <p className="text-sm text-violet-900 font-medium mb-2">
+                Paid packs are the more unique sets.
+              </p>
+              <p className="text-xs text-violet-700 mb-3">
+                Soft lock for testing — tap unlock to browse every card now.
+              </p>
+              <button
+                type="button"
+                onClick={unlock}
+                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-xl active:scale-[0.98] transition-all"
+              >
+                Unlock paid packs (test)
+              </button>
+            </div>
+          )}
+
+          {unlocked && (
+            <button
+              type="button"
+              onClick={lock}
+              className="mb-3 w-full text-xs text-violet-600 underline"
+            >
+              Relock paid packs
+            </button>
+          )}
+
+          <div className="space-y-3">
+            {paid.map((b) => (
+              <BundleTile key={b.id} bundle={b} locked={!unlocked} />
+            ))}
+          </div>
+        </section>
+
+        <div className="rounded-2xl bg-white/80 border border-stone-200 p-4 text-center">
+          <p className="text-xs text-stone-500 mb-2">
+            {book.cards.length} challenges in book · {BUNDLES.length} packs
+          </p>
           <Link
             href="/cards"
-            className="block w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
+            className="inline-block text-sm font-semibold text-orange-600 hover:text-orange-700"
           >
-            Start Saving
+            Browse all cards →
           </Link>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
