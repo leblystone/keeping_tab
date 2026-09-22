@@ -16,7 +16,7 @@ export default function LibraryPage() {
 
   return (
     <div className="min-h-screen">
-      <main className="max-w-md mx-auto px-4 pt-10 pb-16">
+      <main className="max-w-md mx-auto px-4 pt-10 pb-28">
         <header className="mb-10 text-center">
           <p className="text-[11px] font-semibold tracking-[0.28em] uppercase text-ktab-dusty-rose/80 mb-3">
             Keeping Tab
@@ -94,7 +94,7 @@ export default function LibraryPage() {
             {book.cards.length} challenges in book · {BUNDLES.length} packs
           </p>
           <Link
-            href="/cards"
+            href="/browse"
             className="inline-block text-sm font-semibold text-ktab-cream hover:text-ktab-dusty-rose"
           >
             Browse all cards →

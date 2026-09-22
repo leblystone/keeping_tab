@@ -5,6 +5,7 @@ import { Suspense, use, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { Book } from "@/lib/types";
 import { useProgress } from "@/hooks/useProgress";
+import { useFavorites } from "@/hooks/useFavorites";
 import { getCardProgress } from "@/lib/storage";
 import { formatCurrency } from "@/lib/format";
 import { OverlayCardCanvas } from "@/components/OverlayCardCanvas";
@@ -25,10 +26,11 @@ function CardDetailInner({ params }: PageProps) {
   const bundle = fromBundle ? getBundle(fromBundle) : undefined;
 
   const { progress, toggleCell, setOverlayAmount } = useProgress();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const card = book.cards.find((c) => c.id === resolvedParams.id);
 
-  const backHref = bundle ? `/bundles/${bundle.id}` : "/cards";
-  const backLabel = bundle ? bundle.name : "Cards";
+  const backHref = bundle ? `/bundles/${bundle.id}` : "/browse";
+  const backLabel = bundle ? bundle.name : "Browse";
 
   const cardProgress = card ? getCardProgress(progress, card.id) : null;
 
@@ -42,8 +44,8 @@ function CardDetailInner({ params }: PageProps) {
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center">
           <p className="text-ktab-dusty-rose mb-4">Card not found</p>
-          <Link href="/cards" className="text-ktab-cream font-medium">
-            Back to Cards
+          <Link href="/browse" className="text-ktab-cream font-medium">
+            Back to Browse
           </Link>
         </div>
       </div>
@@ -89,10 +91,26 @@ function CardDetailInner({ params }: PageProps) {
               {card.title}
             </h1>
           </div>
+          <button
+            type="button"
+            onClick={() => toggleFavorite(card.id)}
+            className="p-2 text-ktab-cream"
+            aria-label={isFavorite(card.id) ? "Remove favorite" : "Add favorite"}
+          >
+            <span className="text-xl leading-none">
+              {isFavorite(card.id) ? "★" : "☆"}
+            </span>
+          </button>
+          <Link
+            href="/"
+            className="text-xs font-bold text-ktab-dusty-rose hover:text-ktab-cream px-2 py-1"
+          >
+            Home
+          </Link>
         </div>
       </header>
 
-      <main className="max-w-md mx-auto px-4 py-5 pb-24">
+      <main className="max-w-md mx-auto px-4 py-5 pb-28">
         <div className="kt-glass rounded-2xl p-5 mb-6">
           <div className="flex items-center justify-between mb-3">
             <div>

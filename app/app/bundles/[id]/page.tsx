@@ -61,10 +61,16 @@ export default function BundleDetailPage({ params }: PageProps) {
               {bundle.name}
             </h1>
           </div>
+          <Link
+            href="/"
+            className="text-xs font-bold text-ktab-dusty-rose hover:text-ktab-cream px-2 py-1"
+          >
+            Home
+          </Link>
         </div>
       </header>
 
-      <main className="max-w-md mx-auto px-4 py-6 pb-16">
+      <main className="max-w-md mx-auto px-4 py-6 pb-28">
         <div className={`rounded-2xl p-5 mb-6 ${accent.soft}`}>
           <p className={`text-sm ${accent.text}`}>{bundle.tagline}</p>
           <p className="text-xs text-ktab-dusty-rose/75 mt-2">

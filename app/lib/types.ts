@@ -44,6 +44,7 @@ export interface Bundle {
   name: string;
   tagline: string;
   tier: "free" | "paid";
+  priceLabel?: string;
   accent: "amber" | "sky" | "rose" | "violet" | "emerald" | "fuchsia" | "orange";
   cardIds: string[];
 }

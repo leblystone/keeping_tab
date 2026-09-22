@@ -31,11 +31,20 @@ pnpm dev
 
 See [`app/README.md`](app/README.md) for full documentation.
 
+## Native (primary)
+
+```bash
+cd mobile && npm install && npx expo start
+```
+
+Open with Expo Go on device, or press `i` / `a` for simulators.
+
 ## 📁 Repository Structure
 
 ```
 keeping_tab/
-├── app/                    # Next.js web app (MVP)
+├── mobile/                 # Expo React Native (iOS + Android) — ship target
+├── app/                    # Next.js web prototype (secondary)
 │   ├── app/               # Pages and routes
 │   ├── lib/               # Types, storage, utilities
 │   ├── hooks/             # React hooks
