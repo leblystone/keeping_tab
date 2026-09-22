@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Source_Sans_3 } from "next/font/google";
+import { BottomNav } from "@/components/BottomNav";
+import { KillNextOverlays } from "@/components/KillNextOverlays";
 import "./globals.css";
 
 const display = Fraunces({
@@ -25,7 +27,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col text-ktab-cream">{children}</body>
+      <body className="min-h-full flex flex-col text-ktab-cream">
+        <div className="flex-1 flex flex-col pb-20">{children}</div>
+        <BottomNav />
+        <KillNextOverlays />
+      </body>
     </html>
   );
 }

@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Hide Next.js DevTools / nextjs-portal indicator (not product UI).
+  // Kill Next.js DevTools / nextjs-portal / red "N Issue" badge entirely.
+  // Requires a full `next dev` restart to take effect.
   devIndicators: false,
 };
 
