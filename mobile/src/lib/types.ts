@@ -4,11 +4,9 @@ export interface Cell {
   label?: string;
 }
 
-/** Live dollar overlay on a flattened card background. Amounts are editable; sums roll up from these. */
 export interface Overlay {
   id: string;
   amountCents: number;
-  /** Position as % of card canvas (0–100) */
   xPct: number;
   yPct: number;
   wPct: number;
@@ -23,11 +21,9 @@ export interface Card {
   orientation: "portrait";
   goalCents: number;
   brand?: string;
-  /** Temporary seed — overlays drive UX; cells kept for migration / QA notes */
   cells: Cell[];
   qaFlags?: string[];
   cellsSumCents?: number;
-  /** Flattened Canva page art (optional until catalog imported) */
   backgroundSrc?: string;
 }
 
@@ -53,8 +49,11 @@ export interface CardProgress {
   filledCells: Set<string>;
   savedCents: number;
   isComplete: boolean;
-  /** Editable overlay amounts — source of truth for sums when present */
   amountOverrides?: Record<string, number>;
+  lastTouchedAt?: number;
 }
 
 export type ProgressState = Record<string, CardProgress>;
+
+export type SortKey = "default" | "az" | "goal" | "progress";
+export type FilterStatus = "all" | "not_started" | "in_progress" | "complete" | "favorites";
