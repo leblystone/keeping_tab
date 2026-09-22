@@ -1,11 +1,43 @@
 import React, { useEffect } from "react";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AppProvider, useApp } from "../src/context/AppContext";
 import { colors } from "../src/theme/colors";
 import { enableWeeklyReminder, disableReminders } from "../src/lib/reminders";
+
+function HomeHeaderButton() {
+  const router = useRouter();
+  return (
+    <Pressable
+      onPress={() => router.replace("/")}
+      hitSlop={10}
+      accessibilityRole="button"
+      accessibilityLabel="Go home"
+      style={{ paddingHorizontal: 8, minHeight: 44, justifyContent: "center" }}
+    >
+      <Text style={{ color: colors.cream, fontWeight: "700", fontSize: 15 }}>
+        Home
+      </Text>
+    </Pressable>
+  );
+}
+
+const stackHeader = {
+  headerShown: true,
+  headerStyle: { backgroundColor: colors.burgundyDeep },
+  headerTintColor: colors.cream,
+  headerTitleStyle: {
+    fontFamily: "Georgia",
+    fontWeight: "700" as const,
+    color: colors.cream,
+  },
+  headerShadowVisible: false,
+  headerBackTitle: "Back",
+  contentStyle: { backgroundColor: colors.burgundyDeep },
+  headerRight: () => <HomeHeaderButton />,
+};
 
 function Gate({ children }: { children: React.ReactNode }) {
   const { ready, onboardingDone, reminderEnabled } = useApp();
@@ -58,7 +90,28 @@ export default function RootLayout() {
               contentStyle: { backgroundColor: colors.burgundyDeep },
               animation: "slide_from_right",
             }}
-          />
+          >
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="cards/[id]"
+              options={{
+                ...stackHeader,
+                title: "Card",
+              }}
+            />
+            <Stack.Screen
+              name="cards/index"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="bundles/[id]"
+              options={{
+                ...stackHeader,
+                title: "Pack",
+              }}
+            />
+          </Stack>
         </Gate>
       </AppProvider>
     </GestureHandlerRootView>

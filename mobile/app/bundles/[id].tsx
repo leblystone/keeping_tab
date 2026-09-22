@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import bookData from "../../data/cards.json";
 import { Book } from "../../src/lib/types";
@@ -18,12 +18,13 @@ import { useApp } from "../../src/context/AppContext";
 import { ScreenBackground } from "../../src/components/ScreenBackground";
 import { GlassPanel } from "../../src/components/GlassPanel";
 import { CardListRow } from "../../src/components/CardListRow";
-import { colors, accentSolid } from "../../src/theme/colors";
+import { colors } from "../../src/theme/colors";
 
 const book = bookData as Book;
 
 export default function BundleDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
   const { progress, isBundleUnlocked, unlockBundle, favorites } = useApp();
   const bundle = getBundle(id || "");
 
@@ -52,7 +53,6 @@ export default function BundleDetailScreen() {
   }
 
   const locked = !isBundleUnlocked(bundle.id, bundle.tier);
-  const solid = accentSolid[bundle.accent] || colors.taupe;
 
   const sections = useMemo(() => {
     const groups: Record<string, typeof cards> = {
@@ -74,24 +74,25 @@ export default function BundleDetailScreen() {
 
   return (
     <ScreenBackground>
-      <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
-        <View style={styles.header}>
-          <Link href="/" asChild>
-            <Pressable style={styles.back} hitSlop={8}>
-              <Text style={styles.backText}>‹</Text>
-            </Pressable>
-          </Link>
-          <View style={styles.headerCopy}>
-            <Text style={styles.eyebrow}>
-              {bundle.tier === "paid"
-                ? `${bundle.priceLabel || "Paid"} pack`
-                : "Free pack"}
-            </Text>
-            <Text style={styles.title} numberOfLines={1}>
-              {bundle.name}
-            </Text>
-          </View>
-        </View>
+      <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+        <Stack.Screen
+          options={{
+            title: bundle.name,
+            headerRight: () => (
+              <Pressable
+                onPress={() => router.replace("/")}
+                hitSlop={10}
+                accessibilityRole="button"
+                accessibilityLabel="Go home"
+                style={{ paddingHorizontal: 8, minHeight: 44, justifyContent: "center" }}
+              >
+                <Text style={{ color: colors.cream, fontWeight: "700", fontSize: 15 }}>
+                  Home
+                </Text>
+              </Pressable>
+            ),
+          }}
+        />
 
         <SectionList
           sections={locked ? [] : sections}

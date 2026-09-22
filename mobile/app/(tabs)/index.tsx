@@ -1,56 +1,28 @@
 import React, { useMemo } from "react";
-import {
-  Pressable,
-  ScrollView,
-  Share,
-  StyleSheet,
-  Switch,
-  Text,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Link } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
-import bookData from "../data/cards.json";
-import { Book } from "../src/lib/types";
-import { BUNDLES, bundlesByTier } from "../src/lib/bundles";
-import { bookStats, idleNudge, streakDays } from "../src/lib/bookStats";
-import { formatCurrency } from "../src/lib/format";
-import { useApp } from "../src/context/AppContext";
-import { ScreenBackground } from "../src/components/ScreenBackground";
-import { GlassPanel } from "../src/components/GlassPanel";
-import { BundleTile } from "../src/components/BundleTile";
-import { colors } from "../src/theme/colors";
+import bookData from "../../data/cards.json";
+import { Book } from "../../src/lib/types";
+import { bundlesByTier } from "../../src/lib/bundles";
+import { bookStats, idleNudge, streakDays } from "../../src/lib/bookStats";
+import { formatCurrency } from "../../src/lib/format";
+import { useApp } from "../../src/context/AppContext";
+import { ScreenBackground } from "../../src/components/ScreenBackground";
+import { GlassPanel } from "../../src/components/GlassPanel";
+import { BundleTile } from "../../src/components/BundleTile";
+import { colors } from "../../src/theme/colors";
 
 const book = bookData as Book;
 
 export default function HomeScreen() {
-  const {
-    progress,
-    isBundleUnlocked,
-    reminderEnabled,
-    setReminderEnabled,
-    canUndo,
-    undo,
-    exportProgress,
-    favorites,
-  } = useApp();
+  const { progress, isBundleUnlocked, favorites } = useApp();
 
   const stats = useMemo(() => bookStats(book, progress), [progress]);
   const streak = useMemo(() => streakDays(progress), [progress]);
   const nudge = useMemo(() => idleNudge(progress, book), [progress]);
   const free = bundlesByTier("free");
   const paid = bundlesByTier("paid");
-
-  const onShareProgress = async () => {
-    const msg = `Keeping Tab — ${formatCurrency(stats.savedCents)} saved · ${stats.completed} of ${stats.totalCards} challenges done`;
-    try {
-      await Share.share({
-        message: `${msg}\n\n${exportProgress()}`,
-      });
-    } catch {
-      // ignore
-    }
-  };
 
   return (
     <ScreenBackground>
@@ -149,41 +121,6 @@ export default function HomeScreen() {
               />
             ))}
           </View>
-
-          <GlassPanel style={styles.tools}>
-            <Text style={styles.toolsTitle}>Book tools</Text>
-            <View style={styles.toolRow}>
-              <Text style={styles.toolLabel}>Weekly reminder</Text>
-              <Switch
-                value={reminderEnabled}
-                onValueChange={setReminderEnabled}
-                trackColor={{ false: colors.brown, true: colors.sage }}
-                thumbColor={colors.cream}
-              />
-            </View>
-            <Pressable
-              onPress={onShareProgress}
-              style={styles.toolBtn}
-              accessibilityRole="button"
-            >
-              <Text style={styles.toolBtnText}>Share / export progress</Text>
-            </Pressable>
-            {canUndo ? (
-              <Pressable onPress={undo} style={styles.toolBtn}>
-                <Text style={styles.toolBtnText}>Undo last change</Text>
-              </Pressable>
-            ) : null}
-            <Link href="/cards" asChild>
-              <Pressable style={styles.toolBtn}>
-                <Text style={styles.toolBtnText}>
-                  Browse all {book.cards.length} cards →
-                </Text>
-              </Pressable>
-            </Link>
-            <Text style={styles.footerNote}>
-              {book.cards.length} challenges · {BUNDLES.length} packs
-            </Text>
-          </GlassPanel>
         </ScrollView>
       </SafeAreaView>
     </ScreenBackground>
@@ -192,7 +129,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1 },
-  scroll: { paddingHorizontal: 16, paddingBottom: 40, paddingTop: 12 },
+  scroll: { paddingHorizontal: 16, paddingBottom: 28, paddingTop: 12 },
   brand: {
     textAlign: "center",
     color: colors.dustyRoseBright,
@@ -280,33 +217,4 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   list: { gap: 12 },
-  tools: { marginTop: 22 },
-  toolsTitle: {
-    color: colors.cream,
-    fontWeight: "700",
-    fontSize: 15,
-    marginBottom: 10,
-  },
-  toolRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    minHeight: 44,
-    marginBottom: 8,
-  },
-  toolLabel: { color: colors.dustyRoseBright, fontSize: 14 },
-  toolBtn: {
-    minHeight: 44,
-    justifyContent: "center",
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: "rgba(240,220,216,0.2)",
-    paddingVertical: 10,
-  },
-  toolBtnText: { color: colors.cream, fontWeight: "600", fontSize: 14 },
-  footerNote: {
-    marginTop: 8,
-    textAlign: "center",
-    color: colors.dustyRoseBright,
-    fontSize: 12,
-  },
 });

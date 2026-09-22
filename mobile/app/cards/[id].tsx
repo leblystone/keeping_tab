@@ -7,11 +7,10 @@ import {
   Text,
   View,
 } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import bookData from "../../data/cards.json";
 import { Book } from "../../src/lib/types";
-import { getBundle } from "../../src/lib/bundles";
 import { getCardProgress } from "../../src/lib/storage";
 import { formatCurrency } from "../../src/lib/format";
 import { buildOverlays, sumOverlayCents } from "../../src/lib/overlays";
@@ -25,7 +24,8 @@ import { colors } from "../../src/theme/colors";
 const book = bookData as Book;
 
 export default function CardDetailScreen() {
-  const { id, from } = useLocalSearchParams<{ id: string; from?: string }>();
+  const { id } = useLocalSearchParams<{ id: string; from?: string }>();
+  const router = useRouter();
   const {
     progress,
     toggleCell,
@@ -37,7 +37,6 @@ export default function CardDetailScreen() {
   } = useApp();
 
   const card = book.cards.find((c) => c.id === id);
-  const bundle = from ? getBundle(from) : undefined;
   const cardProgress = card ? getCardProgress(progress, card.id) : null;
 
   const overlays = useMemo(() => {
@@ -53,9 +52,9 @@ export default function CardDetailScreen() {
           <Text style={styles.errBody}>
             That challenge is not in this book. Head back and pick another.
           </Text>
-          <Link href="/cards" asChild>
+          <Link href="/browse" asChild>
             <Pressable style={styles.errBtn}>
-              <Text style={styles.errBtnText}>Back to cards</Text>
+              <Text style={styles.errBtnText}>Browse cards</Text>
             </Pressable>
           </Link>
           <Link href="/" asChild>
@@ -77,8 +76,6 @@ export default function CardDetailScreen() {
   const showMismatchNote =
     flagged || (edited && Math.abs(overlaySum - card.goalCents) > 0);
   const isFav = favorites.has(card.id);
-  const backHref = bundle ? (`/bundles/${bundle.id}` as const) : ("/cards" as const);
-  const backLabel = bundle ? bundle.name : "Cards";
 
   const onShareWin = async () => {
     const msg = `I just saved ${formatCurrency(cardProgress.savedCents)} on "${card.title}" with Keeping Tab!`;
@@ -91,29 +88,34 @@ export default function CardDetailScreen() {
 
   return (
     <ScreenBackground>
-      <SafeAreaView style={styles.safe} edges={["top", "left", "right"]}>
-        <View style={styles.header}>
-          <Link href={backHref} asChild>
-            <Pressable style={styles.back} hitSlop={8}>
-              <Text style={styles.backText}>‹</Text>
-            </Pressable>
-          </Link>
-          <View style={styles.headerCopy}>
-            <Text style={styles.eyebrow} numberOfLines={1}>
-              {backLabel}
-            </Text>
-            <Text style={styles.title} numberOfLines={1}>
-              {card.title}
-            </Text>
-          </View>
-          <Pressable
-            onPress={() => toggleFavorite(card.id)}
-            style={styles.fav}
-            accessibilityLabel={isFav ? "Remove favorite" : "Add favorite"}
-          >
-            <Text style={styles.favText}>{isFav ? "★" : "☆"}</Text>
-          </Pressable>
-        </View>
+      <SafeAreaView style={styles.safe} edges={["left", "right"]}>
+        <Stack.Screen
+          options={{
+            title: card.title,
+            headerRight: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Pressable
+                  onPress={() => toggleFavorite(card.id)}
+                  style={styles.fav}
+                  accessibilityLabel={isFav ? "Remove favorite" : "Add favorite"}
+                >
+                  <Text style={styles.favText}>{isFav ? "★" : "☆"}</Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => router.replace("/")}
+                  hitSlop={10}
+                  accessibilityRole="button"
+                  accessibilityLabel="Go home"
+                  style={{ paddingHorizontal: 8, minHeight: 44, justifyContent: "center" }}
+                >
+                  <Text style={{ color: colors.cream, fontWeight: "700", fontSize: 15 }}>
+                    Home
+                  </Text>
+                </Pressable>
+              </View>
+            ),
+          }}
+        />
 
         <ScrollView
           contentContainerStyle={styles.scroll}
