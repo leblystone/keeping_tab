@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Hide Next.js DevTools / nextjs-portal indicator (not product UI).
+  devIndicators: false,
 };
 
 export default nextConfig;

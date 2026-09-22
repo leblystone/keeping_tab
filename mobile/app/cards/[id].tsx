@@ -57,7 +57,7 @@ export default function CardDetailScreen() {
               <Text style={styles.errBtnText}>Browse cards</Text>
             </Pressable>
           </Link>
-          <Link href="/" asChild>
+          <Link href="/(tabs)" asChild>
             <Pressable style={styles.errLink}>
               <Text style={styles.errLinkText}>Home</Text>
             </Pressable>
@@ -102,7 +102,7 @@ export default function CardDetailScreen() {
                   <Text style={styles.favText}>{isFav ? "★" : "☆"}</Text>
                 </Pressable>
                 <Pressable
-                  onPress={() => router.replace("/")}
+                  onPress={() => router.replace("/(tabs)")}
                   hitSlop={10}
                   accessibilityRole="button"
                   accessibilityLabel="Go home"

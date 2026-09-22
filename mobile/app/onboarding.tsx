@@ -1,5 +1,6 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScreenBackground } from "../src/components/ScreenBackground";
 import { GlassPanel } from "../src/components/GlassPanel";
@@ -23,6 +24,13 @@ const STEPS = [
 
 export default function OnboardingScreen() {
   const { completeOnboarding } = useApp();
+  const router = useRouter();
+
+  const finish = () => {
+    completeOnboarding();
+    // Explicit tab shell — don't rely on Gate alone after AsyncStorage write.
+    router.replace("/(tabs)");
+  };
 
   return (
     <ScreenBackground>
@@ -44,11 +52,21 @@ export default function OnboardingScreen() {
         </View>
 
         <Pressable
-          onPress={completeOnboarding}
+          onPress={finish}
           style={({ pressed }) => [styles.cta, pressed && { opacity: 0.9 }]}
           accessibilityRole="button"
+          accessibilityLabel="Start saving and open Home"
         >
           <Text style={styles.ctaText}>Start saving</Text>
+        </Pressable>
+        <Pressable
+          onPress={finish}
+          style={({ pressed }) => [styles.skip, pressed && { opacity: 0.7 }]}
+          accessibilityRole="button"
+          accessibilityLabel="Skip onboarding"
+          hitSlop={8}
+        >
+          <Text style={styles.skipText}>Skip to Home</Text>
         </Pressable>
       </SafeAreaView>
     </ScreenBackground>
@@ -110,4 +128,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ctaText: { color: colors.burgundy, fontWeight: "800", fontSize: 16 },
+  skip: {
+    marginTop: 12,
+    minHeight: 44,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  skipText: {
+    color: colors.dustyRoseBright,
+    fontWeight: "600",
+    fontSize: 14,
+  },
 });

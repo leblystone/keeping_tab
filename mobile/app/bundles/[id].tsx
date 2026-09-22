@@ -42,7 +42,7 @@ export default function BundleDetailScreen() {
           <Text style={styles.errBody}>
             That pack is not available. Head home and pick another.
           </Text>
-          <Link href="/" asChild>
+          <Link href="/(tabs)" asChild>
             <Pressable style={styles.errBtn}>
               <Text style={styles.errBtnText}>Back home</Text>
             </Pressable>
@@ -80,7 +80,7 @@ export default function BundleDetailScreen() {
             title: bundle.name,
             headerRight: () => (
               <Pressable
-                onPress={() => router.replace("/")}
+                onPress={() => router.replace("/(tabs)")}
                 hitSlop={10}
                 accessibilityRole="button"
                 accessibilityLabel="Go home"

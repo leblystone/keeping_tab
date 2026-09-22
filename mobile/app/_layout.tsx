@@ -7,11 +7,16 @@ import { AppProvider, useApp } from "../src/context/AppContext";
 import { colors } from "../src/theme/colors";
 import { enableWeeklyReminder, disableReminders } from "../src/lib/reminders";
 
+/** Cold start / deep links always resolve into the tab shell first. */
+export const unstable_settings = {
+  initialRouteName: "(tabs)",
+};
+
 function HomeHeaderButton() {
   const router = useRouter();
   return (
     <Pressable
-      onPress={() => router.replace("/")}
+      onPress={() => router.replace("/(tabs)")}
       hitSlop={10}
       accessibilityRole="button"
       accessibilityLabel="Go home"
@@ -46,11 +51,14 @@ function Gate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!ready) return;
-    const onOnboarding = segments[0] === "onboarding";
+    const root = segments[0];
+    const onOnboarding = root === "onboarding";
+    // After onboarding, always land in the tab shell — not a bare "/" that
+    // can miss the (tabs) group after a stale Metro reload.
     if (!onboardingDone && !onOnboarding) {
       router.replace("/onboarding");
     } else if (onboardingDone && onOnboarding) {
-      router.replace("/");
+      router.replace("/(tabs)");
     }
   }, [ready, onboardingDone, segments, router]);
 
