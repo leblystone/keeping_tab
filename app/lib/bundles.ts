@@ -99,6 +99,7 @@ export function cardsForBundle(book: Book, bundle: Bundle) {
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
 }
 
+/** Brand-mapped accents — solid KTab palette, no neon gradients. */
 export function accentClasses(accent: Bundle["accent"]): {
   soft: string;
   solid: string;
@@ -107,46 +108,46 @@ export function accentClasses(accent: Bundle["accent"]): {
 } {
   const map = {
     amber: {
-      soft: "bg-amber-50 border-amber-200",
-      solid: "bg-gradient-to-br from-amber-400 to-orange-500",
-      ring: "ring-amber-300",
-      text: "text-amber-800",
+      soft: "bg-surface-raised border-border",
+      solid: "bg-ktab-taupe",
+      ring: "ring-ktab-taupe/40",
+      text: "text-ktab-burgundy",
     },
     sky: {
-      soft: "bg-sky-50 border-sky-200",
-      solid: "bg-gradient-to-br from-sky-400 to-cyan-500",
-      ring: "ring-sky-300",
-      text: "text-sky-800",
+      soft: "bg-surface border-border",
+      solid: "bg-ktab-brown",
+      ring: "ring-ktab-brown/40",
+      text: "text-ktab-brown",
     },
     rose: {
-      soft: "bg-rose-50 border-rose-200",
-      solid: "bg-gradient-to-br from-rose-400 to-pink-500",
-      ring: "ring-rose-300",
-      text: "text-rose-800",
+      soft: "bg-ktab-cream border-ktab-dusty-rose/60",
+      solid: "bg-ktab-dusty-rose",
+      ring: "ring-ktab-dusty-rose/50",
+      text: "text-ktab-burgundy",
     },
     violet: {
-      soft: "bg-violet-50 border-violet-200",
-      solid: "bg-gradient-to-br from-violet-500 to-indigo-600",
-      ring: "ring-violet-300",
-      text: "text-violet-800",
+      soft: "bg-accent-soft border-ktab-burgundy/25",
+      solid: "bg-ktab-burgundy",
+      ring: "ring-ktab-burgundy/35",
+      text: "text-ktab-burgundy",
     },
     emerald: {
-      soft: "bg-emerald-50 border-emerald-200",
-      solid: "bg-gradient-to-br from-emerald-400 to-teal-500",
-      ring: "ring-emerald-300",
-      text: "text-emerald-800",
+      soft: "bg-success-soft border-ktab-sage/35",
+      solid: "bg-ktab-sage",
+      ring: "ring-ktab-sage/40",
+      text: "text-ktab-sage",
     },
     fuchsia: {
-      soft: "bg-fuchsia-50 border-fuchsia-200",
-      solid: "bg-gradient-to-br from-fuchsia-500 to-pink-600",
-      ring: "ring-fuchsia-300",
-      text: "text-fuchsia-800",
+      soft: "bg-surface-raised border-ktab-taupe/40",
+      solid: "bg-ktab-taupe",
+      ring: "ring-ktab-taupe/40",
+      text: "text-ktab-brown",
     },
     orange: {
-      soft: "bg-orange-50 border-orange-200",
-      solid: "bg-gradient-to-br from-orange-400 to-red-500",
-      ring: "ring-orange-300",
-      text: "text-orange-800",
+      soft: "bg-ktab-nude border-ktab-dusty-rose/50",
+      solid: "bg-ktab-brown",
+      ring: "ring-ktab-brown/40",
+      text: "text-ktab-burgundy",
     },
   } as const;
   return map[accent];

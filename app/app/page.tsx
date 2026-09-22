@@ -15,27 +15,27 @@ export default function LibraryPage() {
   const paid = bundlesByTier("paid");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-orange-50/60 to-stone-100">
+    <div className="min-h-screen">
       <main className="max-w-md mx-auto px-4 pt-10 pb-16">
-        <div className="text-center mb-8">
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-amber-700/80 mb-2">
+        <header className="mb-10 text-center">
+          <p className="text-[11px] font-semibold tracking-[0.28em] uppercase text-ktab-taupe mb-3">
             Keeping Tab
           </p>
-          <h1 className="text-4xl font-bold text-stone-800 tracking-tight">
+          <h1 className="h-display text-[2.35rem] leading-tight font-semibold text-ktab-burgundy tracking-tight">
             {book.title}
           </h1>
-          <p className="text-stone-600 mt-2 text-sm">
-            Browse free packs or unlock unique paid sets — then open a card and
-            tap live $ overlays.
+          <p className="mt-3 text-sm text-ktab-brown max-w-[20rem] mx-auto leading-relaxed">
+            Open a pack, pick a card, tap the live $ overlays — same book, now
+            trackable.
           </p>
-        </div>
+        </header>
 
-        <section className="mb-8">
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-emerald-700">
+        <section className="mb-9">
+          <div className="flex items-baseline justify-between mb-3 px-0.5">
+            <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-ktab-sage">
               Free packs
             </h2>
-            <span className="text-xs text-stone-500">{free.length} packs</span>
+            <span className="text-xs text-ktab-taupe">{free.length} packs</span>
           </div>
           <div className="space-y-3">
             {free.map((b) => (
@@ -44,28 +44,28 @@ export default function LibraryPage() {
           </div>
         </section>
 
-        <section className="mb-8">
-          <div className="flex items-center justify-between mb-3 px-1">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-violet-700">
+        <section className="mb-9">
+          <div className="flex items-baseline justify-between mb-3 px-0.5">
+            <h2 className="text-xs font-bold uppercase tracking-[0.18em] text-ktab-burgundy">
               Paid packs
             </h2>
-            <span className="text-xs text-stone-500">
+            <span className="text-xs text-ktab-taupe">
               {paid.length} unique · {unlocked ? "unlocked" : "preview lock"}
             </span>
           </div>
 
           {!unlocked && (
-            <div className="mb-3 rounded-2xl border border-violet-200 bg-violet-50 p-4">
-              <p className="text-sm text-violet-900 font-medium mb-2">
+            <div className="mb-3 kt-book-shell rounded-xl p-4">
+              <p className="text-sm text-ktab-ink font-medium mb-1">
                 Paid packs are the more unique sets.
               </p>
-              <p className="text-xs text-violet-700 mb-3">
-                Soft lock for testing — tap unlock to browse every card now.
+              <p className="text-xs text-ktab-brown mb-3 leading-relaxed">
+                Soft lock for testing — unlock to browse every card now.
               </p>
               <button
                 type="button"
                 onClick={unlock}
-                className="w-full bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 rounded-xl active:scale-[0.98] transition-all"
+                className="w-full bg-ktab-burgundy hover:bg-ktab-brown text-ktab-cream font-semibold py-3 rounded-lg active:scale-[0.98] transition-all"
               >
                 Unlock paid packs (test)
               </button>
@@ -76,7 +76,7 @@ export default function LibraryPage() {
             <button
               type="button"
               onClick={lock}
-              className="mb-3 w-full text-xs text-violet-600 underline"
+              className="mb-3 w-full text-xs text-ktab-taupe underline underline-offset-2"
             >
               Relock paid packs
             </button>
@@ -89,13 +89,13 @@ export default function LibraryPage() {
           </div>
         </section>
 
-        <div className="rounded-2xl bg-white/80 border border-stone-200 p-4 text-center">
-          <p className="text-xs text-stone-500 mb-2">
+        <div className="kt-book-shell rounded-xl p-4 text-center">
+          <p className="text-xs text-ktab-taupe mb-2">
             {book.cards.length} challenges in book · {BUNDLES.length} packs
           </p>
           <Link
             href="/cards"
-            className="inline-block text-sm font-semibold text-orange-600 hover:text-orange-700"
+            className="inline-block text-sm font-semibold text-ktab-burgundy hover:text-ktab-brown"
           >
             Browse all cards →
           </Link>

@@ -16,38 +16,38 @@ export function BundleTile({ bundle, locked }: Props) {
   return (
     <Link
       href={href}
-      className={`block relative overflow-hidden rounded-2xl border p-5 transition-all active:scale-[0.98] hover:shadow-md ${accent.soft}`}
+      className={`block relative overflow-hidden rounded-xl border p-4 transition-all active:scale-[0.98] hover:shadow-sm ${accent.soft}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-1.5">
             <span
-              className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full text-white ${
-                bundle.tier === "paid"
-                  ? "bg-violet-600"
-                  : "bg-emerald-600"
+              className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded text-ktab-cream ${
+                bundle.tier === "paid" ? "bg-ktab-burgundy" : "bg-ktab-sage"
               }`}
             >
               {bundle.tier}
             </span>
             {locked && (
-              <span className="text-[10px] font-semibold text-violet-700 bg-violet-100 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-semibold text-ktab-burgundy bg-accent-soft px-2 py-0.5 rounded">
                 locked
               </span>
             )}
           </div>
-          <h3 className={`text-lg font-bold truncate ${accent.text}`}>
+          <h3
+            className={`h-display text-lg font-semibold truncate ${accent.text}`}
+          >
             {bundle.name}
           </h3>
-          <p className="text-sm text-gray-600 mt-1 line-clamp-2">
+          <p className="text-sm text-ktab-brown mt-1 line-clamp-2 leading-snug">
             {bundle.tagline}
           </p>
-          <p className="text-xs text-gray-500 mt-3">
+          <p className="text-xs text-ktab-taupe mt-3">
             {bundle.cardIds.length} cards · tap to open
           </p>
         </div>
         <div
-          className={`w-12 h-12 rounded-xl flex-shrink-0 shadow-sm ${accent.solid} flex items-center justify-center text-white font-bold`}
+          className={`w-11 h-11 rounded-lg flex-shrink-0 ${accent.solid} flex items-center justify-center text-ktab-cream font-bold`}
         >
           {locked ? (
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

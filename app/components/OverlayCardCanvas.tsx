@@ -49,9 +49,9 @@ export function OverlayCardCanvas({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between gap-2">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-ktab-taupe">
           Overlay sum:{" "}
-          <span className="font-semibold text-gray-800">
+          <span className="font-semibold text-ktab-ink">
             {formatCurrency(overlaySum)}
           </span>
           {background ? " · art on" : " · placeholder art"}
@@ -62,10 +62,10 @@ export function OverlayCardCanvas({
             setEditMode((v) => !v);
             setEditingId(null);
           }}
-          className={`text-xs font-semibold px-3 py-1.5 rounded-full transition-colors ${
+          className={`text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
             editMode
-              ? "bg-orange-500 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-ktab-burgundy text-ktab-cream"
+              : "bg-ktab-nude text-ktab-brown hover:bg-ktab-dusty-rose/50"
           }`}
         >
           {editMode ? "Done editing" : "Edit $ amounts"}
@@ -73,7 +73,7 @@ export function OverlayCardCanvas({
       </div>
 
       <div
-        className="relative w-full mx-auto rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-[#f6efe6]"
+        className="relative w-full mx-auto rounded-xl overflow-hidden border border-border bg-ktab-nude shadow-sm"
         style={{ aspectRatio: "522 / 794", maxWidth: 420 }}
       >
         {background ? (
@@ -85,23 +85,20 @@ export function OverlayCardCanvas({
             draggable={false}
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-b from-[#f3e7d8] via-[#efe2d2] to-[#e8d5c0]">
+          <div className="absolute inset-0 bg-ktab-cream">
             <div className="absolute top-6 left-0 right-0 text-center px-6">
-              <p className="font-serif text-3xl text-stone-700/80 italic">
+              <p className="h-display text-3xl text-ktab-burgundy/70 italic">
                 savings
               </p>
-              <p className="text-xs tracking-[0.25em] uppercase text-stone-500 mt-1">
+              <p className="text-xs tracking-[0.25em] uppercase text-ktab-taupe mt-1">
                 challenge
               </p>
             </div>
-            <p className="absolute bottom-4 left-0 right-0 text-center text-[10px] text-stone-400">
+            <p className="absolute bottom-4 left-0 right-0 text-center text-[10px] text-ktab-taupe">
               Art import pending · overlays live
             </p>
           </div>
         )}
-
-        {/* Soft veil so $ overlays stay readable over busy art */}
-        <div className="absolute inset-0 bg-white/10 pointer-events-none" />
 
         {overlays.map((overlay) => {
           const filled = filledIds.has(overlay.id);
@@ -124,11 +121,11 @@ export function OverlayCardCanvas({
                 width: `${overlay.wPct}%`,
                 height: `${overlay.hPct}%`,
               }}
-              className={`absolute flex items-center justify-center rounded-lg border-2 transition-all active:scale-95 ${
+              className={`absolute flex items-center justify-center rounded-md border transition-all active:scale-95 ${
                 filled
-                  ? "bg-amber-500/90 border-amber-600 text-white shadow-md"
-                  : "bg-white/85 border-white/90 text-stone-800 shadow-sm backdrop-blur-[2px]"
-              } ${editMode ? "ring-2 ring-orange-400 ring-offset-1" : ""}`}
+                  ? "bg-ktab-burgundy border-ktab-burgundy text-ktab-cream shadow-sm"
+                  : "bg-ktab-cream border-ktab-taupe/45 text-ktab-ink shadow-sm"
+              } ${editMode ? "outline outline-2 outline-ktab-taupe outline-offset-1" : ""}`}
             >
               {isEditing ? (
                 <input
@@ -141,7 +138,7 @@ export function OverlayCardCanvas({
                     if (e.key === "Escape") setEditingId(null);
                   }}
                   onClick={(e) => e.stopPropagation()}
-                  className="w-[90%] text-center text-sm font-bold bg-white text-stone-900 rounded px-1 py-0.5 outline-none"
+                  className="w-[90%] text-center text-sm font-bold bg-surface-raised text-ktab-ink rounded px-1 py-0.5 outline-none border border-ktab-taupe/40"
                   inputMode="decimal"
                 />
               ) : (
@@ -154,7 +151,7 @@ export function OverlayCardCanvas({
         })}
       </div>
 
-      <p className="text-center text-xs text-gray-500">
+      <p className="text-center text-xs text-ktab-taupe">
         {editMode
           ? "Tap a $ box to change the amount — live sum updates"
           : "Tap a $ overlay to fill · sum rolls up from overlays"}

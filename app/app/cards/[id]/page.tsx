@@ -39,10 +39,10 @@ function CardDetailInner({ params }: PageProps) {
 
   if (!card || !cardProgress) {
     return (
-      <div className="min-h-screen bg-stone-50 flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center">
-          <p className="text-gray-600 mb-4">Card not found</p>
-          <Link href="/cards" className="text-orange-600 font-medium">
+          <p className="text-ktab-brown mb-4">Card not found</p>
+          <Link href="/cards" className="text-ktab-burgundy font-medium">
             Back to Cards
           </Link>
         </div>
@@ -60,12 +60,12 @@ function CardDetailInner({ params }: PageProps) {
     flagged || (edited && Math.abs(overlaySum - card.goalCents) > 0);
 
   return (
-    <div className="min-h-screen bg-stone-50">
-      <header className="bg-white border-b border-stone-200 sticky top-0 z-10">
+    <div className="min-h-screen">
+      <header className="sticky top-0 z-10 border-b border-border bg-surface-raised/95">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
           <Link
             href={backHref}
-            className="text-stone-600 hover:text-stone-900 transition-colors p-1"
+            className="text-ktab-taupe hover:text-ktab-burgundy transition-colors p-1"
           >
             <svg
               className="w-6 h-6"
@@ -82,10 +82,10 @@ function CardDetailInner({ params }: PageProps) {
             </svg>
           </Link>
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] uppercase tracking-wider text-stone-400 font-bold truncate">
+            <p className="text-[10px] uppercase tracking-wider text-ktab-taupe font-bold truncate">
               {backLabel}
             </p>
-            <h1 className="text-lg font-semibold text-stone-800 truncate">
+            <h1 className="h-display text-lg font-semibold text-ktab-burgundy truncate">
               {card.title}
             </h1>
           </div>
@@ -93,34 +93,34 @@ function CardDetailInner({ params }: PageProps) {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-5 pb-24">
-        <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-4 mb-5">
+        <div className="kt-book-shell rounded-xl p-4 mb-5">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-xs text-stone-500">Printed goal</p>
-              <p className="text-xl font-bold text-stone-900">
+              <p className="text-xs text-ktab-taupe">Printed goal</p>
+              <p className="text-xl font-bold text-ktab-ink">
                 {formatCurrency(card.goalCents)}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-stone-500">Saved (overlays)</p>
-              <p className="text-xl font-bold text-orange-600">
+              <p className="text-xs text-ktab-taupe">Saved (overlays)</p>
+              <p className="text-xl font-bold text-ktab-burgundy">
                 {formatCurrency(cardProgress.savedCents)}
               </p>
             </div>
           </div>
 
-          <div className="relative h-2.5 bg-stone-100 rounded-full overflow-hidden mb-2">
+          <div className="relative h-2.5 kt-progress-track rounded-full overflow-hidden mb-2">
             <div
               className={`absolute inset-y-0 left-0 rounded-full transition-all ${
                 cardProgress.isComplete
-                  ? "bg-green-500"
-                  : "bg-gradient-to-r from-amber-400 to-orange-500"
+                  ? "kt-progress-fill-done"
+                  : "kt-progress-fill"
               }`}
               style={{ width: `${Math.min(progressPercent, 100)}%` }}
             />
           </div>
 
-          <div className="flex items-center justify-between text-xs text-stone-500">
+          <div className="flex items-center justify-between text-xs text-ktab-taupe">
             <span>
               {cardProgress.filledCells.size} of {overlays.length} filled
             </span>
@@ -128,16 +128,16 @@ function CardDetailInner({ params }: PageProps) {
           </div>
 
           {cardProgress.isComplete && (
-            <div className="mt-3 bg-green-50 border border-green-200 rounded-lg p-3 flex items-center gap-2">
-              <span className="text-sm font-medium text-green-800">
+            <div className="mt-3 bg-success-soft border border-ktab-sage/30 rounded-lg p-3">
+              <span className="text-sm font-medium text-ktab-sage">
                 Challenge completed!
               </span>
             </div>
           )}
 
           {showMismatchNote && (
-            <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
-              <p className="text-xs text-amber-800">
+            <div className="mt-3 bg-accent-soft border border-ktab-burgundy/20 rounded-lg p-3">
+              <p className="text-xs text-ktab-brown leading-relaxed">
                 Overlay amounts sum to {formatCurrency(overlaySum)}; printed
                 goal is {formatCurrency(card.goalCents)}. Edit overlays to
                 match — printed goal stays primary.
@@ -164,7 +164,7 @@ export default function CardDetailPage(props: PageProps) {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center text-stone-500 text-sm">
+        <div className="min-h-screen flex items-center justify-center text-ktab-taupe text-sm">
           Loading card…
         </div>
       }
