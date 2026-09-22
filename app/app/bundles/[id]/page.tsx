@@ -31,8 +31,8 @@ export default function BundleDetailPage({ params }: PageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center">
-          <p className="text-ktab-brown mb-4">Pack not found</p>
-          <Link href="/" className="text-ktab-burgundy font-medium">
+          <p className="text-ktab-dusty-rose mb-4">Pack not found</p>
+          <Link href="/" className="text-ktab-cream font-medium">
             Back home
           </Link>
         </div>
@@ -46,18 +46,18 @@ export default function BundleDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 border-b border-border bg-surface-raised/95">
+      <header className="sticky top-0 z-10 kt-header-glass">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
-          <Link href="/" className="text-ktab-taupe hover:text-ktab-burgundy p-1">
+          <Link href="/" className="text-ktab-dusty-rose hover:text-ktab-cream p-1">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-ktab-taupe">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-ktab-dusty-rose/80">
               {bundle.tier} pack
             </p>
-            <h1 className="h-display text-lg font-semibold text-ktab-burgundy truncate">
+            <h1 className="h-display text-lg font-semibold text-ktab-cream truncate">
               {bundle.name}
             </h1>
           </div>
@@ -65,15 +65,15 @@ export default function BundleDetailPage({ params }: PageProps) {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-6 pb-16">
-        <div className={`rounded-xl border p-5 mb-6 ${accent.soft}`}>
+        <div className={`rounded-2xl p-5 mb-6 ${accent.soft}`}>
           <p className={`text-sm ${accent.text}`}>{bundle.tagline}</p>
-          <p className="text-xs text-ktab-taupe mt-2">
+          <p className="text-xs text-ktab-dusty-rose/75 mt-2">
             {cards.length} cards · tap any to open overlays
           </p>
         </div>
 
         {isLocked && (
-          <div className="mb-6 kt-book-shell rounded-xl p-5 text-center">
+          <div className="mb-6 kt-glass rounded-2xl p-5 text-center">
             <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-ktab-burgundy text-ktab-cream flex items-center justify-center">
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -83,14 +83,14 @@ export default function BundleDetailPage({ params }: PageProps) {
                 />
               </svg>
             </div>
-            <p className="font-semibold text-ktab-burgundy mb-1">Paid pack</p>
-            <p className="text-xs text-ktab-brown mb-4">
+            <p className="font-semibold text-ktab-cream mb-1">Paid pack</p>
+            <p className="text-xs text-ktab-dusty-rose mb-4">
               Unique set — unlock for testing to open every card.
             </p>
             <button
               type="button"
               onClick={unlock}
-              className="w-full bg-ktab-burgundy text-ktab-cream font-semibold py-3 rounded-lg active:scale-[0.98]"
+              className="w-full bg-ktab-cream/90 text-ktab-burgundy font-semibold py-3 rounded-lg active:scale-[0.98]"
             >
               Unlock & browse
             </button>
@@ -106,12 +106,12 @@ export default function BundleDetailPage({ params }: PageProps) {
 
             const inner = (
               <div
-                className={`flex gap-3 items-stretch kt-book-shell rounded-xl overflow-hidden ${
+                className={`flex gap-3 items-stretch kt-glass rounded-2xl overflow-hidden ${
                   isLocked ? "opacity-60" : "active:scale-[0.99]"
                 } transition-all`}
               >
                 <div
-                  className="w-16 flex-shrink-0 bg-ktab-nude relative"
+                  className="w-16 flex-shrink-0 bg-ktab-burgundy relative"
                   style={{ minHeight: 72 }}
                 >
                   {bg ? (
@@ -126,10 +126,10 @@ export default function BundleDetailPage({ params }: PageProps) {
                   )}
                 </div>
                 <div className="flex-1 min-w-0 py-3 pr-3">
-                  <h2 className="font-semibold text-ktab-ink truncate">
+                  <h2 className="font-semibold text-ktab-cream truncate">
                     {card.title}
                   </h2>
-                  <p className="text-xs text-ktab-taupe mt-0.5">
+                  <p className="text-xs text-ktab-dusty-rose/75 mt-0.5">
                     Goal {formatCurrency(card.goalCents)} ·{" "}
                     {card.cells.length} overlays
                   </p>

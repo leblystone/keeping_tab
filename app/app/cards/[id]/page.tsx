@@ -41,8 +41,8 @@ function CardDetailInner({ params }: PageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center">
-          <p className="text-ktab-brown mb-4">Card not found</p>
-          <Link href="/cards" className="text-ktab-burgundy font-medium">
+          <p className="text-ktab-dusty-rose mb-4">Card not found</p>
+          <Link href="/cards" className="text-ktab-cream font-medium">
             Back to Cards
           </Link>
         </div>
@@ -61,11 +61,11 @@ function CardDetailInner({ params }: PageProps) {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 border-b border-border bg-surface-raised/95">
+      <header className="sticky top-0 z-10 kt-header-glass">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-3">
           <Link
             href={backHref}
-            className="text-ktab-taupe hover:text-ktab-burgundy transition-colors p-1"
+            className="text-ktab-dusty-rose hover:text-ktab-cream transition-colors p-1"
           >
             <svg
               className="w-6 h-6"
@@ -82,10 +82,10 @@ function CardDetailInner({ params }: PageProps) {
             </svg>
           </Link>
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] uppercase tracking-wider text-ktab-taupe font-bold truncate">
+            <p className="text-[10px] uppercase tracking-wider text-ktab-dusty-rose/80 font-bold truncate">
               {backLabel}
             </p>
-            <h1 className="h-display text-lg font-semibold text-ktab-burgundy truncate">
+            <h1 className="h-display text-lg font-semibold text-ktab-cream truncate">
               {card.title}
             </h1>
           </div>
@@ -93,17 +93,17 @@ function CardDetailInner({ params }: PageProps) {
       </header>
 
       <main className="max-w-md mx-auto px-4 py-5 pb-24">
-        <div className="kt-book-shell rounded-xl p-4 mb-5">
+        <div className="kt-glass rounded-2xl p-5 mb-6">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-xs text-ktab-taupe">Printed goal</p>
-              <p className="text-xl font-bold text-ktab-ink">
+              <p className="text-xs text-ktab-dusty-rose/80">Printed goal</p>
+              <p className="text-xl font-bold text-ktab-cream">
                 {formatCurrency(card.goalCents)}
               </p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-ktab-taupe">Saved (overlays)</p>
-              <p className="text-xl font-bold text-ktab-burgundy">
+              <p className="text-xs text-ktab-dusty-rose/80">Saved (overlays)</p>
+              <p className="text-xl font-bold text-ktab-cream">
                 {formatCurrency(cardProgress.savedCents)}
               </p>
             </div>
@@ -120,7 +120,7 @@ function CardDetailInner({ params }: PageProps) {
             />
           </div>
 
-          <div className="flex items-center justify-between text-xs text-ktab-taupe">
+          <div className="flex items-center justify-between text-xs text-ktab-dusty-rose/80">
             <span>
               {cardProgress.filledCells.size} of {overlays.length} filled
             </span>
@@ -128,7 +128,7 @@ function CardDetailInner({ params }: PageProps) {
           </div>
 
           {cardProgress.isComplete && (
-            <div className="mt-3 bg-success-soft border border-ktab-sage/30 rounded-lg p-3">
+            <div className="mt-3 bg-success-soft border border-ktab-sage/40 rounded-xl p-3">
               <span className="text-sm font-medium text-ktab-sage">
                 Challenge completed!
               </span>
@@ -136,8 +136,8 @@ function CardDetailInner({ params }: PageProps) {
           )}
 
           {showMismatchNote && (
-            <div className="mt-3 bg-accent-soft border border-ktab-burgundy/20 rounded-lg p-3">
-              <p className="text-xs text-ktab-brown leading-relaxed">
+            <div className="mt-3 bg-ktab-cream/10 border border-ktab-cream/20 rounded-xl p-3">
+              <p className="text-xs text-ktab-dusty-rose leading-relaxed">
                 Overlay amounts sum to {formatCurrency(overlaySum)}; printed
                 goal is {formatCurrency(card.goalCents)}. Edit overlays to
                 match — printed goal stays primary.

@@ -16,11 +16,11 @@ function CardsList() {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-10 border-b border-border bg-surface-raised/95">
+      <header className="sticky top-0 z-10 kt-header-glass">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center gap-4">
           <Link
             href="/"
-            className="text-ktab-taupe hover:text-ktab-burgundy transition-colors"
+            className="text-ktab-dusty-rose hover:text-ktab-cream transition-colors"
           >
             <svg
               className="w-6 h-6"
@@ -36,16 +36,16 @@ function CardsList() {
               />
             </svg>
           </Link>
-          <h1 className="h-display text-xl font-semibold text-ktab-burgundy flex-1">
+          <h1 className="h-display text-xl font-semibold text-ktab-cream flex-1">
             All Challenges
           </h1>
         </div>
       </header>
 
       <main className="max-w-md mx-auto px-4 py-6">
-        <p className="text-xs text-ktab-taupe mb-4 px-0.5">
+        <p className="text-xs text-ktab-dusty-rose/80 mb-4 px-0.5">
           Prefer packs?{" "}
-          <Link href="/" className="text-ktab-burgundy font-semibold">
+          <Link href="/" className="text-ktab-cream font-semibold">
             Free vs Paid on home
           </Link>
         </p>
@@ -60,9 +60,9 @@ function CardsList() {
               <Link
                 key={card.id}
                 href={`/cards/${card.id}`}
-                className="flex gap-3 kt-book-shell rounded-xl overflow-hidden active:scale-[0.99] transition-all"
+                className="flex gap-3 kt-glass rounded-2xl overflow-hidden active:scale-[0.99] transition-all"
               >
-                <div className="w-14 flex-shrink-0 relative bg-ktab-nude min-h-[4.5rem]">
+                <div className="w-14 flex-shrink-0 relative bg-ktab-burgundy min-h-[4.5rem]">
                   {bg ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -77,10 +77,10 @@ function CardsList() {
                 <div className="flex-1 min-w-0 py-3 pr-4">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 min-w-0">
-                      <h2 className="text-base font-semibold text-ktab-ink truncate">
+                      <h2 className="text-base font-semibold text-ktab-cream truncate">
                         {card.title}
                       </h2>
-                      <p className="text-xs text-ktab-taupe mt-0.5">
+                      <p className="text-xs text-ktab-dusty-rose/75 mt-0.5">
                         Goal: {formatCurrency(card.goalCents)}
                       </p>
                     </div>
@@ -113,7 +113,7 @@ function CardsList() {
                       style={{ width: `${Math.min(progressPercent, 100)}%` }}
                     />
                   </div>
-                  <div className="flex justify-between text-[10px] text-ktab-taupe mt-1">
+                  <div className="flex justify-between text-[10px] text-ktab-dusty-rose/75 mt-1">
                     <span>
                       {formatCurrency(cardProgress.savedCents)} saved
                     </span>
@@ -133,7 +133,7 @@ export default function CardsPage() {
   return (
     <Suspense
       fallback={
-        <div className="p-8 text-center text-ktab-taupe">Loading…</div>
+        <div className="p-8 text-center text-ktab-dusty-rose">Loading…</div>
       }
     >
       <CardsList />

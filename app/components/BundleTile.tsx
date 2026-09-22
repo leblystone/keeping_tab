@@ -16,7 +16,7 @@ export function BundleTile({ bundle, locked }: Props) {
   return (
     <Link
       href={href}
-      className={`block relative overflow-hidden rounded-xl border p-4 transition-all active:scale-[0.98] hover:shadow-sm ${accent.soft}`}
+      className={`block relative overflow-hidden rounded-2xl p-4 transition-all active:scale-[0.98] ${accent.soft}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
@@ -29,7 +29,7 @@ export function BundleTile({ bundle, locked }: Props) {
               {bundle.tier}
             </span>
             {locked && (
-              <span className="text-[10px] font-semibold text-ktab-burgundy bg-accent-soft px-2 py-0.5 rounded">
+              <span className="text-[10px] font-semibold text-ktab-cream bg-ktab-cream/15 px-2 py-0.5 rounded">
                 locked
               </span>
             )}
@@ -39,10 +39,10 @@ export function BundleTile({ bundle, locked }: Props) {
           >
             {bundle.name}
           </h3>
-          <p className="text-sm text-ktab-brown mt-1 line-clamp-2 leading-snug">
+          <p className="text-sm text-ktab-dusty-rose mt-1 line-clamp-2 leading-snug">
             {bundle.tagline}
           </p>
-          <p className="text-xs text-ktab-taupe mt-3">
+          <p className="text-xs text-ktab-dusty-rose/75 mt-3">
             {bundle.cardIds.length} cards · tap to open
           </p>
         </div>

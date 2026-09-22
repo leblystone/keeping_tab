@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${display.variable} ${body.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col text-ktab-ink">{children}</body>
+      <body className="min-h-full flex flex-col text-ktab-cream">{children}</body>
     </html>
   );
 }
