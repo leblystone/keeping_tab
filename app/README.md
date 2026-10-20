@@ -15,7 +15,7 @@ This MVP implements the **Printable Savings - TAB v.1** book with **41 interacti
   - Card list - all 41 challenges with progress indicators
   - Card detail - interactive grid where you tap cells to fill/unfill
 - 💾 **localStorage persistence** - progress survives page refresh
-- ✅ **Completion tracking** - cards marked complete when all cells filled or goal met
+- ✅ **Completion tracking** - a card is complete only when every cell is filled (reaching the printed goal alone does not complete it)
 - 🔍 **QA flag awareness** - displays note when cell sums don't match printed goal
 
 ## Getting Started

@@ -76,7 +76,8 @@ Test cards with `cell_sum_mismatch` flag:
 - [ ] Open "$1000 Emergency Funds" (v1-p06)
   - Goal shows: $1,000  
   - Amber note appears with actual sum ($960)
-- [ ] Card still marks complete when all cells filled
+- [ ] Card marks complete only when every cell is filled
+- [ ] Reaching/exceeding the printed goal with boxes still empty does NOT mark complete
 - [ ] Printed goal always displayed prominently
 
 ## 🔄 Edge Cases

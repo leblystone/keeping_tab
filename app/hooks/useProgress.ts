@@ -33,7 +33,6 @@ export function useProgress() {
 
       const newSavedCents = sumFilledOverlayCents(overlays, newFilledCells);
       const allFilled = overlays.every((o) => newFilledCells.has(o.id));
-      const goalMet = newSavedCents >= card.goalCents;
 
       return {
         ...prev,
@@ -41,7 +40,8 @@ export function useProgress() {
           ...cardProgress,
           filledCells: newFilledCells,
           savedCents: newSavedCents,
-          isComplete: allFilled || goalMet,
+          // Complete only when every printed box is filled (goal-met no longer counts).
+          isComplete: allFilled,
         },
       };
     });
@@ -68,7 +68,6 @@ export function useProgress() {
       const allFilled = overlays.every((o) =>
         cardProgress.filledCells.has(o.id)
       );
-      const goalMet = newSavedCents >= card.goalCents;
 
       return {
         ...prev,
@@ -76,7 +75,8 @@ export function useProgress() {
           ...cardProgress,
           amountOverrides,
           savedCents: newSavedCents,
-          isComplete: allFilled || goalMet,
+          // Complete only when every printed box is filled (goal-met no longer counts).
+          isComplete: allFilled,
         },
       };
     });
