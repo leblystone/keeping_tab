@@ -10,6 +10,7 @@ import {
   hasBoxMap,
   sumOverlayCents,
 } from "@/lib/overlays";
+import { ShapeTapLayer } from "./ShapeTapLayer";
 
 type Props = {
   card: Card;
@@ -104,7 +105,14 @@ export function OverlayCardCanvas({
           </div>
         )}
 
-        {overlays.map((overlay) => {
+        {printed && !editMode ? (
+          <ShapeTapLayer
+            cardId={card.id}
+            amounts={Object.fromEntries(overlays.map((o) => [o.id, o.amountCents]))}
+            filledIds={filledIds}
+            onToggle={onToggle}
+          />
+        ) : overlays.map((overlay) => {
           const filled = filledIds.has(overlay.id);
           const isEditing = editingId === overlay.id;
 

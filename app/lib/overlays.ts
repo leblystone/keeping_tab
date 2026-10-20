@@ -1,7 +1,22 @@
 import { Card, Overlay } from "./types";
 import boxMapData from "@/data/box-map.json";
 
-type BoxMapCell = { id: string; x: number; y: number; w: number; h: number };
+export type BoxMapCell = {
+  id: string;
+  amountCents: number;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  shape?: "circle" | "ellipse" | "rect" | "roundrect" | "polygon";
+  cx?: number;
+  cy?: number;
+  r?: number;
+  rx?: number;
+  ry?: number;
+  cornerRadius?: number;
+  points?: [number, number][];
+};
 type BoxMapCard = { cardId: string; image: string; cells: BoxMapCell[] };
 const boxMap = boxMapData as unknown as {
   pageWidthPx: number;
@@ -11,6 +26,13 @@ const boxMap = boxMapData as unknown as {
 const BOX_MAP: Record<string, BoxMapCard> = Object.fromEntries(
   boxMap.cards.map((c) => [c.cardId, c])
 );
+
+export const BOX_PAGE_W = boxMap.pageWidthPx;
+export const BOX_PAGE_H = boxMap.pageHeightPx;
+
+export function getBoxMapCard(cardId: string): BoxMapCard | undefined {
+  return BOX_MAP[cardId];
+}
 
 /** True when the card has exact Canva box positions (page art with printed boxes). */
 export function hasBoxMap(cardId: string): boolean {
@@ -129,7 +151,7 @@ export const CARD_BACKGROUNDS: Record<string, string> = {
 };
 
 export function getCardBackground(cardId: string): string | undefined {
-  if (BOX_MAP[cardId]) return `/cards/v1-hd/${cardId}.png?v=box1`;
+  if (BOX_MAP[cardId]) return `/cards/v1-hd/${cardId}.png?v=box2`;
   return CARD_BACKGROUNDS[cardId];
 }
 
