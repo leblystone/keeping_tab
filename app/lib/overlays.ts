@@ -1,4 +1,29 @@
 import { Card, Overlay } from "./types";
+import boxMapData from "@/data/box-map.json";
+
+type BoxMapCell = { id: string; x: number; y: number; w: number; h: number };
+type BoxMapCard = { cardId: string; image: string; cells: BoxMapCell[] };
+const boxMap = boxMapData as unknown as {
+  pageWidthPx: number;
+  pageHeightPx: number;
+  cards: BoxMapCard[];
+};
+const BOX_MAP: Record<string, BoxMapCard> = Object.fromEntries(
+  boxMap.cards.map((c) => [c.cardId, c])
+);
+
+/** True when the card has exact Canva box positions (page art with printed boxes). */
+export function hasBoxMap(cardId: string): boolean {
+  return Boolean(BOX_MAP[cardId]);
+}
+
+/** Width / height of the card page art. */
+export function getCardAspect(cardId: string): number {
+  return hasBoxMap(cardId)
+    ? boxMap.pageWidthPx / boxMap.pageHeightPx
+    : 522 / 794;
+}
+
 
 /** Full Canva catalog backgrounds (flattened / amounts stripped). */
 export const CARD_BACKGROUNDS: Record<string, string> = {
@@ -104,6 +129,7 @@ export const CARD_BACKGROUNDS: Record<string, string> = {
 };
 
 export function getCardBackground(cardId: string): string | undefined {
+  if (BOX_MAP[cardId]) return `/cards/v1-hd/${cardId}.png?v=box1`;
   return CARD_BACKGROUNDS[cardId];
 }
 
@@ -117,6 +143,24 @@ export function buildOverlays(
 ): Overlay[] {
   const n = card.cells.length;
   if (n === 0) return [];
+
+  const mapped = BOX_MAP[card.id];
+  if (mapped) {
+    const pos = new Map(mapped.cells.map((c) => [c.id, c]));
+    if (card.cells.every((c) => pos.has(c.id))) {
+      return card.cells.map((cell) => {
+        const b = pos.get(cell.id)!;
+        return {
+          id: cell.id,
+          amountCents: amountOverrides?.[cell.id] ?? cell.amountCents,
+          xPct: b.x * 100,
+          yPct: b.y * 100,
+          wPct: b.w * 100,
+          hPct: b.h * 100,
+        };
+      });
+    }
+  }
 
   const cols = n <= 6 ? 2 : n <= 12 ? 3 : n <= 16 ? 4 : 4;
   const rows = Math.ceil(n / cols);
